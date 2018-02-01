@@ -1,0 +1,28 @@
+@import '../../../@theme/styles/themes';
+@import '~@nebular/theme/components/card/card.component.theme';
+@import '~@nebular/theme/styles/global/typography/typography';
+@import '~bootstrap/scss/mixins/breakpoints';
+@import '~@nebular/theme/styles/global/bootstrap/breakpoints';
+
+@include nb-install-component() {
+   
+    display: block;
+    height: nb-theme(card-height-medium);
+    width: 100%;
+
+    /deep/ chart {
+      display: block;
+      height: 100%;
+      width: 100%;
+    }
+  
+ nb-card {
+    display: flex;
+    flex-direction: row;
+  }
+
+  nb-card-body {
+    overflow: hidden;
+  }
+ 
+}

@@ -1,0 +1,274 @@
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { NbThemeService } from '@nebular/theme';
+import { ReadjsonService } from '../../../@core/data/readjson.service';
+
+
+@Component({
+  selector: 'ngx-gradient-bar',
+  styleUrls: ['./gradient-bar.component.scss'],
+  template: `
+  <nb-card>
+   <div class="chart-header">
+    <div class="dropdown" ngbDropdown>
+        <button type="button" ngbDropdownToggle class="btn"
+                [ngClass]="{ 'btn-outline-success': currentTheme == 'default', 'btn-primary': currentTheme != 'default'}">
+          {{ type.title }}
+        </button>
+        <ul class="dropdown-menu" ngbDropdownMenu>
+          <li class="dropdown-item" *ngFor="let t of types" (click)="onSelect(t)">{{t.title}} </li>
+        </ul>
+      </div>
+      <div class="dropdown" ngbDropdown>
+        <button type="button" ngbDropdownToggle class="btn"
+                [ngClass]="{ 'btn-outline-success': currentTheme == 'default', 'btn-primary': currentTheme != 'default'}">
+          {{ sub }}
+        </button>
+        <ul class="dropdown-menu" ngbDropdownMenu>
+          <li class="dropdown-item" *ngFor="let lt of geo.subtitle" (click)="onSelect2(lt)">{{lt}} </li>
+        </ul>
+      </div>
+    </div>
+    <div echarts [options]="option" class="echart"></div>
+    </nb-card>
+  `,
+})
+export class GradientBarComponent implements OnDestroy, OnInit {
+
+  option: any = {};
+  themeSubscription: any;
+  type = { title:'Ap', subtitle:['ANZ_INHOUSE', 'JP_INHOUSE', 'INDIA', 'ASEAN_MY_KR', 'HTK_KR_HK_TW', 'ASEAN_TTL']};
+  types = [{ title:'Ap', subtitle:['ANZ_INHOUSE', 'JP_INHOUSE', 'INDIA', 'ASEAN_MY_KR', 'HTK_KR_HK_TW', 'ASEAN_TTL']},
+            { title:'NAG', subtitle:['INHOUSE_CONSUMER', 'INHOUSE_COMMERCIAL']},
+            { title:'EMEA', subtitle:['L3_CONSUMER', 'L3_COMMERCIAL']},
+            { title:'LAS', subtitle:['INHOUSE_CONSUMER', 'INHOUSE_COMMERCIAL']}];
+  sub = 'ANZ_INHOUSE';
+  geo = { title:'Ap', subtitle:['ANZ_INHOUSE', 'JP_INHOUSE', 'INDIA', 'ASEAN_MY_KR', 'HTK_KR_HK_TW', 'ASEAN_TTL']};
+  // dataAxis = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20'];
+  // data = [220, 182, 191, 234, 290, 330, 310, 123, 442, 321, 90, 149, 210, 122, 133, 334, 198, 123, 125, 220];
+  // yMax = 500;
+  // dataShadow = [1000, 400, 191, 234, 290, 330, 310, 123, 442, 321, 90, 149, 210, 122, 133, 334, 198, 123, 125, 220];
+  Week_Axis = [];
+  Week_Geo = [];
+  Week_WW = [];
+  Week_Usage = [];
+  Week_Total = [];
+  Month_Axis = [];
+  Month_Geo = [];
+  Month_WW = [];
+  Month_Usage = [];
+  Month_Total = [];
+  dataAxis = [];
+  dataGeo = [];
+  dataWW = [];
+  dataUsage = [];
+  dataTotal = [];
+  constructor(private readjsonService: ReadjsonService, private theme: NbThemeService) {
+     readjsonService.getJson('assets/jsonfiles/dashboard1.json').subscribe(val => {
+        this.Week_Axis = val.week.date;
+        this.Week_Geo = val.week.Geo;
+        this.Week_WW = val.week.WW;
+        this.Week_Usage = val.week.usage;
+       for (let i = 0; i < this.Week_Geo.length; i++)
+       {
+         this.Week_Total.push(this.Week_Geo[i] + this.Week_WW[i]);
+       }
+        this.Month_Axis = val.month.date;
+        this.Month_Geo = val.month.Geo;
+        this.Month_WW = val.month.WW;
+        this.Month_Usage = val.month.usage;
+       for (let i = 0; i < this.Month_Geo.length; i++)
+       {
+         this.Month_Total.push(this.Month_Geo[i] + this.Month_WW[i]);
+       }
+
+     this.themeSubscription = this.theme.getJsTheme().subscribe(config => {
+      const colors: any = config.variables;
+      const echarts: any = config.variables.echarts;
+      this.setOptions('Week', colors, echarts);
+        });
+     });
+   }
+
+
+    ngOnInit(): void {
+      this.themeSubscription = this.theme.getJsTheme().subscribe(config => {
+      const echarts: any = config.variables.echarts;
+      const colors: any = config.variables;
+      this.setOptions('Week', colors, echarts);
+    })
+    }
+    ngOnDestroy(): void {
+    this.themeSubscription.unsubscribe();
+  }
+    private onSelect(type: any): void {
+    this.themeSubscription = this.theme.getJsTheme().subscribe(config => {
+      const echarts: any = config.variables.echarts;
+      const colors: any = config.variables;
+      this.type = type;
+      this.geo = type;
+      this.sub = this.geo.subtitle[0];
+      this.setOptions(type, colors, echarts);
+    })
+  }
+  private onSelect2(lt: any): void {
+    this.themeSubscription = this.theme.getJsTheme().subscribe(config => {
+      const echarts: any = config.variables.echarts;
+      const colors: any = config.variables;
+      this.sub = lt;
+      this.setOptions(lt, colors, echarts);
+    })
+  }
+  private setOptions(type: any, colors: any, echarts: any): void {
+    if(type == 'Week'){
+      this.dataAxis = this.Week_Axis;
+      this.dataGeo = this.Week_Geo;
+      this.dataWW = this.Week_WW;
+      this.dataUsage = this.Week_Usage;
+      this.dataTotal = this.Week_Total;
+    }
+    else if(type == 'Month'){
+      this.dataAxis = this.Month_Axis;
+      this.dataGeo = this.Month_Geo;
+      this.dataWW = this.Month_WW;
+      this.dataUsage = this.Month_Usage;
+      this.dataTotal = this.Month_Total;
+    }
+        this.option = {
+        backgroundColor: echarts.bg,
+        tooltip: {
+            trigger: 'axis',
+            axisPointer: {
+                type: 'shadow',
+            },
+        },
+        
+        legend: {
+            data: ['Geo_Total', 'WW_Hub'],
+            
+        },
+       grid: {
+               left: '3%',
+               right: '4%',
+              bottom: '20%',
+              top: '5%',
+              containLabel: true,
+            },
+        xAxis: {
+          data: this.dataAxis,
+            axisLine: {
+                lineStyle: {
+                 color: echarts.axisLineColor,
+                },
+             },
+            axisTick: {
+                show: false,
+            },
+            z: 10,
+        },
+        yAxis: [ {
+            type: 'value',
+                axisLine: {
+                  lineStyle: {
+                    color: echarts.axisLineColor,
+                  },
+                },
+                splitLine: {
+                  lineStyle: {
+                    color: echarts.splitLineColor,
+                  },
+                },
+        }, 
+        {
+           type: 'value',
+           axisLine: {
+                lineStyle: {
+                 color: echarts.axisLineColor,
+                },
+             },     
+               
+        }],
+         dataZoom: [
+            {
+                /*start:10,
+                end:90,*/
+                backgroundColor: echarts.axisLineColor,
+            },
+            {
+                
+                type: 'inside',
+            }
+        ],
+        series: [
+            { // For shadow
+                type: 'bar',
+                //yAxisIndex: 1,
+                /* itemStyle: {
+                    normal: {color: 'rgba(0,0,0,0.05)'},
+                },*/
+                itemStyle: {
+                normal: {
+                    barBorderRadius: 5,
+                    color: '#83FCD8',//'#DCF7A1',
+                    /*new echarts.graphic.LinearGradient(
+                        0, 0, 0, 1,
+                        [
+                            {offset: 0, color: '#14c8d4'},
+                            {offset: 1, color: '#43eec6'},
+                        ],
+                    ),*/
+                },
+            },
+                barGap: '-100%',
+                barCategoryGap: '40%',
+                data: this.dataTotal,
+                animation: false,
+            },
+            {
+                type: 'bar',
+                itemStyle: {
+                    normal: {
+                        color: colors.infoLight,//'#8192D6',
+                        /*new echarts.graphic.LinearGradient(
+                            0, 0, 0, 1,
+                            [
+                                {offset: 0, color: '#83bff6'},
+                                {offset: 0.5, color: '#188df0'},
+                                {offset: 1, color: '#188df0'},
+                            ],
+                        ),*/
+                    },
+                    emphasis: {
+                        color: '#81C2D6',
+                        /*new echarts.graphic.LinearGradient(
+                            0, 0, 0, 1,
+                            [
+                                {offset: 0, color: '#2378f7'},
+                                {offset: 0.7, color: '#2378f7'},
+                                {offset: 1, color: '#83bff6'},
+                            ],
+                        ),*/
+                    },
+                },
+                data: this.dataGeo,
+            },
+            { // For shadow
+                type: 'line',
+                yAxisIndex: 1,
+                /* itemStyle: {
+                    normal: {color: 'rgba(0,0,0,0.05)'},
+                },*/
+                itemStyle: {
+                normal: {
+                    barBorderRadius: 5,
+                    color: colors.warningLight//colors.dangerLight,
+                },
+            },
+                barGap: '-100%',
+                barCategoryGap: '40%',
+                data: this.dataUsage,
+                animation: false,
+            },
+        ],
+    };
+  }
+}

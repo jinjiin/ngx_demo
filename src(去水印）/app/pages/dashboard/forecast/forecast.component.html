@@ -1,0 +1,133 @@
+
+      <div class="row">
+      <div class="col-xxxl-2">
+        <ngx-card title="Submit" (click)="onCertain()"></ngx-card>
+      </div>
+      <div class="col-xxxl-2 col-md-4">
+      <ngx-status-card title="CommodityVal" [description]="CommodityVal"></ngx-status-card>
+      </div>
+      <div class="col-xxxl-2 col-md-4">
+      <ngx-status-card title="ProductName" [description]="ProductName"></ngx-status-card>
+      </div>
+      <div class="col-xxxl-2 col-md-4">
+      <ngx-status-card title="CC" [description]="CC"></ngx-status-card>
+      </div>
+      <div class="col-xxxl-2 col-md-4">
+      <ngx-status-card title="Price" [description]="Price"></ngx-status-card>
+      </div>
+      <!--
+      <div class="col-xxxl-2 col-md-4">
+      <ngx-card title="Stock" [description]="Stock"></ngx-card>
+      </div>-->
+      <div class="col-xxxl-2 col-md-4">
+      <ngx-card title="SubstitutesPNS" [description]="SubstitutesPNS"></ngx-card>
+      </div>
+         
+    </div>
+    <div class="row">
+      <div class="col-xxxl-2 col-md-4">
+      <ngx-status-card title="New Usage" [description]="NewUsage"></ngx-status-card>
+      </div>
+      <div class="col-xxxl-2 col-md-4">
+      <ngx-status-card title="Mean Usage" [description]="MeanUsage"></ngx-status-card>
+      </div>
+      <div class="col-xxxl-2 col-md-4">
+      <ngx-status-card title="Total Weeks" [description]="TotalWeeks"></ngx-status-card>
+      </div>
+      <div class="col-xxxl-2 col-md-4">
+      <ngx-status-card title="Frequency" [description]="Frequency"></ngx-status-card>
+      </div>
+      <div class="col-xxxl-2 col-md-4">
+      <ngx-status-card title="Match" [description]="Match"></ngx-status-card>
+      </div>
+      <div class="col-xxxl-2 col-md-4">
+      <ngx-status-card title="MeanLag" [description]="MeanGap"></ngx-status-card>
+      </div>
+
+    </div>
+    <div class="row">
+    <div [hidden]="!flag" class="alert alert-danger box-msg" role="alert">
+    <strong>Attention Please:</strong> {{messinfo}}
+
+    </div>
+    </div>
+  <div class="row">
+	<div class="col-lg-6">
+	 <nb-card>
+     <nb-card-header>Short-Term Forecast</nb-card-header>
+      <nb-card-body>   
+		<div class="row">
+			
+			<div class="col-lg-2">
+			
+    			<ul class="best">
+			      <li>
+			       <span class="badge">Best</span> {{bestM}}
+			      </li>
+			     </ul>
+			
+			   <h6>  STF Methods:</h6>
+			      <ul class="methods">
+			      <li *ngFor="let method of methods"
+			        [class.selected]="method === selectedMethod"
+			        (click)="onSelect(method)">
+			        <span class="badge">{{method.id}}</span> {{method.name}}
+			      </li>
+			    </ul>   
+       </div>
+       <div class="col-lg-10">
+       <amCharts id="shortterm" [options]="options" [style.width.%]="100" [style.height.px]="500"></amCharts>
+         </div>
+          </div>
+	  </nb-card-body>
+    </nb-card>
+  </div>
+ 
+ <div class="col-lg-6">
+ 	 <nb-card>
+     <nb-card-header>Long-Term Forecast</nb-card-header>
+      <nb-card-body> 
+      <div class="row">
+			<div class="col-lg-3">
+    		<h6>LTF Results:</h6>
+			  <amCharts id="ltf" [options]="LTFoptions" [style.width.%]="100" [style.height.px]="200"></amCharts>  
+			  
+    			<!-- <ul class="tabs">
+			      <li>
+			       <span class="badge">RA</span> {{RA}}
+			      </li>
+			      <li>
+			      <span class="badge">RA-shift</span> {{RAShift}}
+			      </li>
+			      <li>
+			      <span class="badge">IB Total Predict</span> {{IB}}
+			      </li>
+			    </ul>   -->
+			    
+			 <h6>3M LTF Results:</h6>
+			 <amCharts id="mltf" [options]="MLTFoptions" [style.width.%]="100" [style.height.px]="200"></amCharts>  
+    			<!--<ul class="tabs">
+			        <li><span class="badge">Actual</span> {{Actual}}</li>
+			        <li><span class="badge">RA</span> {{Rap}}</li>
+			        <li><span class="badge">RA-shift</span> {{Rasp}}</li>
+			        <li><span class="badge">IB Predict Usage</span> {{Ibp}}</li>
+			      
+	     	    </ul>   -->
+    		</div>
+			<div class="col-lg-9">
+      
+            <amCharts id="longterm" [options]="Longoptions" [style.width.%]="100" [style.height.px]="500"></amCharts>  
+    		
+    		</div>
+    		
+     </div>
+    <!--<ngx-multi-axis-chart [selectPN]="pn"></ngx-multi-axis-chart>-->
+    </nb-card-body>
+    </nb-card> 
+  </div>
+</div>
+
+
+
+
+

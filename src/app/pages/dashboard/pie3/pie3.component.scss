@@ -1,0 +1,35 @@
+@import '../../../@theme/styles/themes';
+@import '~@nebular/theme/components/card/card.component.theme';
+@import '~@nebular/theme/styles/global/typography/typography';
+@import '~bootstrap/scss/mixins/breakpoints';
+@import '~@nebular/theme/styles/global/bootstrap/breakpoints';
+
+@include nb-install-component() {
+	nb-card-body{
+	height: 18.5rem;
+	}
+}
+/deep/ ngx-charts-pie-grid {
+.label {
+    font-size: 25px!important;
+    font-weight: normal;
+    stroke: #FFFFFF;
+    stroke-width: 0.5;
+    fill: #FFFFFF;
+  } 
+  @include media-breakpoint-between(md, xl) {
+  
+    .label {
+    font-size: 1.3rem!important;
+    font-weight: normal;
+    stroke: #FFFFFF;
+    stroke-width: 0.5;
+    fill: #FFFFFF;
+  }
+  .view {
+  height: 40;
+  width: 40;  
+  }
+  }
+  
+}

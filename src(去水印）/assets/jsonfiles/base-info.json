@@ -1,0 +1,14 @@
+[{
+    "CommodityVal": "Memory",
+    "ProductName": "THINKPAD-T550",
+    "Price": "14.3$",
+    "Brand": "ThinkPad",
+    "Usage": "8",
+    "InstallBase": "4600",
+    "MeanUsage": "13.96",
+    "TotalWeeks": "221",
+    "MeanGap":"4m",
+    "SubstitutesPNS": "04X0439,04X0441,04X0804,00HM066",
+    "LTBTime": "2017-05-20",
+    "LifeCycle": "EOL"
+}]

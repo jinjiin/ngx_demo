@@ -1,0 +1,34 @@
+<div class="row">
+<div class="col-lg-2">
+  <!--<div [hidden]=true>
+   <input  (ngModelChange)="PNChanged($event)" [(ngModel)]="selectPN" type="text" placeholder="Project" class="form-control"/>
+   <input type="text" (change)="onChange($event)"/>
+  </div>-->
+
+
+
+
+
+<ngx-status-card title="" [description]="bestM" type="success">
+  <i class="ion-thumbsup"></i>
+</ngx-status-card>
+<button type="button" (click)="onCertain()">Details</button>
+   <h5>STF Methods:</h5>
+      <ul class="methods">
+      <li *ngFor="let method of methods"
+        [class.selected]="method === selectedMethod"
+        (click)="onSelect(method)">
+        <span class="badge">{{method.id}}</span> {{method.name}}
+      </li>
+    </ul>   
+
+
+</div>
+    <div class="col-lg-10">
+    <amCharts id="doublebar" [options]="options" [style.width.%]="100" [style.height.px]="500"></amCharts>
+</div>
+</div>
+
+
+
+

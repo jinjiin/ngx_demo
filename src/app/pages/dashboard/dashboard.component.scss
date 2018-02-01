@@ -1,0 +1,64 @@
+@import '../../@theme/styles/themes';
+@import '~bootstrap/scss/mixins/breakpoints';
+@import '~@nebular/theme/styles/global/bootstrap/breakpoints';
+
+@include nb-install-component() {
+  ngx-pie1,
+  ngx-bar{
+  	display:block;
+  	height: nb-theme(card-height-medium);
+    width: 100%;
+  }
+    /deep/ .echart {
+    height: 100%;
+    width: 100%;
+  }
+  .solar-card nb-card-header {
+    border: none;
+    padding-bottom: 0;
+  }
+  
+  
+  /*@include media-breakpoint-between(md,lg) {
+    ngx-traffic {
+      display: none;
+    }
+     .groupCC {
+      display: none;
+    }
+    ngx-top5 {
+      display: none;
+    }
+    ngx-table {
+      display: none;
+    }
+  
+  }
+  @include media-breakpoint-between(sm,xl) {
+    .groupCC {
+      display: none;
+    }
+    ngx-top5 {
+      display: none;
+    }
+    ngx-table {
+      display: none;
+    }
+  }
+ */
+  @include media-breakpoint-down(xxl) {//小于等于xxl尺寸的，执行下列操作
+    /deep/ nb-card.large-card {
+      height: nb-theme(card-height-medium);
+    }
+     .groupCC {
+      display: none;
+    }
+    ngx-top5 {
+      display: none;
+    }
+    ngx-table {
+      display: none;
+    }
+      
+  }
+}

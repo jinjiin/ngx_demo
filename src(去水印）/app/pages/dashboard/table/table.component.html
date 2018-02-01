@@ -1,0 +1,16 @@
+<nb-card size='small'>
+  <div class="consumption-table">
+    <nb-tabset>
+      <nb-tab *ngFor="let i of datas" [tabTitle]="i.title" [active]="i.active">
+        <div class="stats-month" *ngFor="let j of i.data">
+          <div>
+            <span class="CC">{{ j.CC }}</span>
+          </div>
+          <div class="results">
+            <b>{{ j.Usage }}</b>
+          </div>
+        </div>
+      </nb-tab>
+      </nb-tabset>
+  </div>
+</nb-card>
